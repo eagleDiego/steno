@@ -111,7 +111,10 @@ jobs:
       - name: Install npm deps
         run: npm ci
 
-      - name: Build Tauri app (${{ matrix.os }})
+      - name: Build Rust app
+        run: cargo build --release -p steno-app
+
+      - name: Package app with Tauri CLI
         run: npm run tauri build -- --bundles ${{ matrix.bundle }}
         env:
           # Prevent AppImage from trying to FUSE-mount

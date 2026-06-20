@@ -72,7 +72,10 @@ jobs:
       - name: Install npm deps
         run: npm ci
 
-      - name: Build
+      - name: Build Rust app
+        run: cargo build --release -p steno-app
+
+      - name: Package app with Tauri CLI
         run: npm run tauri build -- --bundles ${{ matrix.bundle }}
         env:
           APPIMAGE_EXTRACT_AND_RUN: 1
