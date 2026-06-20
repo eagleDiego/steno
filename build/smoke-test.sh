@@ -55,13 +55,13 @@ case "${EXT}" in
         check "Installer is valid .deb"   dpkg-deb --info "${INSTALLER}" >/dev/null 2>&1
         ;;
     AppImage)
-        check "Installer is valid AppImage"  test -x "${INSTALLER}" && file "${INSTALLER}" | grep -q "ELF"
+        check "Installer is valid AppImage"  sh -c 'test -x "$1" && file "$1" | grep -q "ELF"' _ "${INSTALLER}"
         ;;
     exe)
-        check "Installer is valid .exe"   file "${INSTALLER}" | grep -qiE "PE32|executable"
+        check "Installer is valid .exe"   sh -c 'file "$1" | grep -qiE "PE32|executable"' _ "${INSTALLER}"
         ;;
     dmg)
-        check "Installer is valid .dmg"   file "${INSTALLER}" | grep -qiE "(disk image|Apple Disk Image|zlib compressed|bzip2 compressed)"
+        check "Installer is valid .dmg"   sh -c 'file "$1" | grep -qiE "(disk image|Apple Disk Image|zlib compressed|bzip2 compressed)"' _ "${INSTALLER}"
         ;;
     rpm)
         check "Installer is valid .rpm"   rpm -K "${INSTALLER}" >/dev/null 2>&1 || true
