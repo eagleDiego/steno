@@ -90,7 +90,7 @@ case "${EXT}" in
     exe)
         # Windows: run installer silently
         INSTALL_DIR="${PROGRAMFILES:-C:/Program Files}/Steno"
-        check "Run NSIS installer"    "${INSTALLER}" /S >"${INSTALL_LOG}" 2>&1 || true
+        check "Run NSIS installer"    timeout 30 "${INSTALLER}" /S >"${INSTALL_LOG}" 2>&1 || true
         check "Binary exists"         test -f "${INSTALL_DIR}/Steno.exe"
         ;;
     dmg)
