@@ -25,7 +25,7 @@ pub fn run() {
             steno_core::ui::commands::set_detection_mode,
             steno_core::ui::commands::get_detection_mode,
         ])
-        .setup(|app| {
+        .setup(|_app| {
             let _tray_cfg = steno_core::ui::tray::setup_tray();
             tracing::info!("Steno initialized (tray: {})", _tray_cfg.tooltip);
             Ok(())
