@@ -37,8 +37,9 @@ jobs:
           sudo apt-get install -y -qq \
             libwebkit2gtk-4.1-dev libappindicator3-dev \
             librsvg2-dev patchelf libssl-dev
-          # PipeWire headers for steno-core's pipewire-rs dependency
-          sudo apt-get install -y -qq libpipewire-0.3-dev libspa-0.2-dev || true
+          # PipeWire + ALSA headers for steno-core's audio capture deps
+          sudo apt-get install -y -qq libpipewire-0.3-dev libspa-0.2-dev \
+            libasound2-dev || true
 
       - name: Cache Cargo
         uses: Swatinem/rust-cache@v2
@@ -90,8 +91,9 @@ jobs:
           sudo apt-get install -y -qq \
             libwebkit2gtk-4.1-dev libappindicator3-dev \
             librsvg2-dev patchelf libssl-dev
-          # PipeWire headers for steno-core's pipewire-rs dependency
-          sudo apt-get install -y -qq libpipewire-0.3-dev libspa-0.2-dev || true
+          # PipeWire + ALSA headers for steno-core's audio capture deps
+          sudo apt-get install -y -qq libpipewire-0.3-dev libspa-0.2-dev \
+            libasound2-dev || true
 
       - name: Install macOS deps (Tauri)
         if: runner.os == 'macOS'

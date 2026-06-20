@@ -24,7 +24,9 @@ steno-app (Tauri 2.x desktop app)
 #### Linux
 ```bash
 sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev \
-  librsvg2-dev patchelf libssl-dev
+  librsvg2-dev patchelf libssl-dev libasound2-dev
+# PipeWire headers for system audio capture (optional, PulseAudio fallback works without):
+sudo apt-get install -y libpipewire-0.3-dev libspa-0.2-dev || true
 ```
 
 #### macOS
