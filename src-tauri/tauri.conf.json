@@ -1,0 +1,60 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nickel-org/nickel-org.github.io/master/tauri/tauri-conf-schema.json",
+  "productName": "Steno",
+  "version": "0.1.0",
+  "identifier": "com.nerd-aero.steno",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "title": "Steno - Meeting Audio Capture",
+        "width": 800,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "category": "Utility",
+    "copyright": "Copyright (c) 2026 NERD.aero",
+    "shortDescription": "Meeting audio capture and relay",
+    "longDescription": "Cross-platform meeting audio capture with automatic meeting detection, WAV recording, and secure relay to remote endpoints.",
+    "macOS": {
+      "minimumSystemVersion": "14.0",
+      "exceptionDomain": ""
+    },
+    "linux": {
+      "deb": {
+        "depends": []
+      },
+      "appimage": {
+        "bundleMediaFramework": false
+      }
+    },
+    "windows": {
+      "wix": null,
+      "nsis": {
+        "installMode": "currentUser"
+      }
+    }
+  }
+}

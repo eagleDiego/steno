@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steno</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>Steno</h1>
+        <p class="subtitle">Meeting Audio Capture</p>
+      </header>
+      <main>
+        <section id="status-section">
+          <div id="status-indicator" class="status-idle">
+            <span class="dot"></span>
+            <span id="status-text">Idle</span>
+          </div>
+        </section>
+        <section id="controls">
+          <button id="btn-start" class="btn btn-start">Start Capture</button>
+          <button id="btn-stop" class="btn btn-stop" disabled>Stop Capture</button>
+        </section>
+        <section id="info">
+          <div class="info-row">
+            <label>Meeting:</label>
+            <span id="meeting-name">—</span>
+          </div>
+          <div class="info-row">
+            <label>Duration:</label>
+            <span id="capture-duration">00:00</span>
+          </div>
+          <div class="info-row">
+            <label>Status:</label>
+            <span id="capture-status">Not running</span>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

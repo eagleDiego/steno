@@ -1,0 +1,30 @@
+[package]
+name = "steno-app"
+version = "0.1.0"
+edition = "2021"
+description = "Steno - Meeting audio capture desktop app"
+
+[dependencies]
+steno-core = { path = "../", features = ["ui"] }
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-shell = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[lib]
+name = "steno_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+path = "src/lib.rs"
+
+[[bin]]
+name = "steno-app"
+path = "src/main.rs"

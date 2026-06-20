@@ -1,0 +1,28 @@
+# Rust
+target/
+# Cargo.lock is committed for application (reproducible builds)
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Tauri
+src-tauri/target/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+*.tmp
+
+# Build artifacts
+dist/installers/
