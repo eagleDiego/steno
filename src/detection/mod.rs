@@ -86,6 +86,7 @@ pub trait AudioActivitySensor: Send + Sync + 'static {
 /// checks audio activity, and emits events.
 pub struct DetectionManager {
     engine: Box<dyn DetectionEngine>,
+    #[expect(dead_code)]
     sensor: Box<dyn AudioActivitySensor>,
     mode: DetectionMode,
     allowlist: Vec<String>,
@@ -133,23 +134,21 @@ impl DetectionManager {
                     return Ok(Some(event));
                 }
             }
-            Some(false) => {
-                if self.meeting_active {
-                    self.meeting_active = false;
-                    let app = match &self.last_event_sent {
-                        Some(DetectionEvent::MeetingStarted { app_name, .. }) => app_name.clone(),
-                        _ => "unknown".to_string(),
-                    };
-                    let event = DetectionEvent::MeetingEnded {
-                        app_name: app,
-                        ended_at: SystemTime::now(),
-                    };
-                    self.last_event_sent = Some(event.clone());
-                    return Ok(Some(event));
-                }
+            Some(false) if self.meeting_active => {
+                self.meeting_active = false;
+                let app = match &self.last_event_sent {
+                    Some(DetectionEvent::MeetingStarted { app_name, .. }) => app_name.clone(),
+                    _ => "unknown".to_string(),
+                };
+                let event = DetectionEvent::MeetingEnded {
+                    app_name: app,
+                    ended_at: SystemTime::now(),
+                };
+                self.last_event_sent = Some(event.clone());
+                return Ok(Some(event));
             }
-            None => {
-                // Uncertain — keep current state
+            _ => {
+                // No state change (uncertain or `Some(false)` when not active)
             }
         }
 

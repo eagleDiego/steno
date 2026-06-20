@@ -1,12 +1,18 @@
 /// Tauri commands — the IPC bridge between the Svelte frontend and Rust backend.
-use serde::{Deserialize, Serialize};
-use std::sync::Arc;
 use tokio::sync::RwLock;
 
-use crate::audio::{AudioCaptureManager, CaptureCapabilities, CaptureConfig};
-use crate::detection::{DetectionManager, DetectionMode};
+use crate::audio::{AudioCaptureManager, CaptureConfig};
+use crate::detection::DetectionManager;
+use crate::events::EventBus;
+
+#[cfg(feature = "ui")]
 use crate::error::AppError;
-use crate::events::{AppEvent, EventBus, UiState};
+#[cfg(feature = "ui")]
+use crate::audio::CaptureCapabilities;
+#[cfg(feature = "ui")]
+use crate::detection::DetectionMode;
+#[cfg(feature = "ui")]
+use crate::events::AppEvent;
 
 /// Shared application state managed by Tauri.
 pub struct TauriAppState {
@@ -26,6 +32,12 @@ impl TauriAppState {
             config: RwLock::new(CaptureConfig::default()),
             is_capturing: RwLock::new(false),
         }
+    }
+}
+
+impl Default for TauriAppState {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

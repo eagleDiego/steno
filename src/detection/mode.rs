@@ -2,13 +2,14 @@
 use serde::{Deserialize, Serialize};
 
 /// Three detection modes selectable in settings.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum DetectionMode {
     /// User starts/stops capture explicitly.
     Manual,
     /// Capture begins automatically when criteria are met, stops when absent.
     Auto,
     /// Auto-detect but require one click to confirm before capture begins.
+    #[default]
     Armed,
 }
 
@@ -36,12 +37,6 @@ impl std::fmt::Display for DetectionMode {
             DetectionMode::Auto => write!(f, "auto"),
             DetectionMode::Armed => write!(f, "armed"),
         }
-    }
-}
-
-impl Default for DetectionMode {
-    fn default() -> Self {
-        Self::Armed
     }
 }
 

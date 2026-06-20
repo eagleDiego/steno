@@ -1,5 +1,4 @@
 /// Shared consent and storage types.
-
 pub mod consent {
     use serde::{Deserialize, Serialize};
     use uuid::Uuid;

@@ -15,7 +15,9 @@ pub struct WavFileSink {
     writer: Arc<Mutex<Option<WavWriter<BufWriter<File>>>>>,
     path: PathBuf,
     stream_id: StreamId,
+    #[expect(dead_code)]
     sample_rate: u32,
+    #[expect(dead_code)]
     channels: u16,
     flushed: Arc<std::sync::atomic::AtomicBool>,
 }

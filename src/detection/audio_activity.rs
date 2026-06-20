@@ -16,6 +16,12 @@ pub struct CpalActivitySensor {
     noise_floor: f32,
 }
 
+impl Default for CpalActivitySensor {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl CpalActivitySensor {
     pub fn new() -> Self {
         Self {

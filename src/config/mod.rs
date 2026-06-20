@@ -8,7 +8,7 @@ use std::path::PathBuf;
 use crate::detection::DetectionMode;
 
 /// Top-level application configuration.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Config {
     pub capture: CaptureSettings,
     pub detection: DetectionSettings,
@@ -18,20 +18,7 @@ pub struct Config {
     pub ui: UiSettings,
 }
 
-impl Default for Config {
-    fn default() -> Self {
-        Self {
-            capture: CaptureSettings::default(),
-            detection: DetectionSettings::default(),
-            inference: InferenceSettings::default(),
-            storage: StorageSettings::default(),
-            consent: ConsentSettings::default(),
-            ui: UiSettings::default(),
-        }
-    }
-}
-
-/// Audio capture settings.
+// ── Audio capture settings ────────────────────────────────────────────
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CaptureSettings {
     pub mic_enabled: bool,

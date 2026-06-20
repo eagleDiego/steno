@@ -1,15 +1,14 @@
 /// Cross-platform microphone capture using cpal.
 use async_trait::async_trait;
-use bytes::Bytes;
-use std::sync::Arc;
 use tokio::sync::mpsc;
 
 use super::{
-    AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId,
+    AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode,
 };
 use crate::error::CaptureError;
 
 /// MicCapture uses cpal (cross-platform) to capture microphone input.
+#[derive(Default)]
 pub struct MicCapture;
 
 impl MicCapture {
@@ -21,7 +20,7 @@ impl MicCapture {
 #[async_trait]
 impl AudioCaptureBackend for MicCapture {
     fn capabilities(&self) -> CaptureCapabilities {
-        use cpal::traits::{DeviceTrait, HostTrait};
+        use cpal::traits::HostTrait;
 
         let host = cpal::default_host();
         let mic_available = host.default_input_device().is_some();

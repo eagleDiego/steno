@@ -1,10 +1,9 @@
 /// Linux system audio capture using PipeWire (preferred) or PulseAudio (fallback).
 use async_trait::async_trait;
-use bytes::Bytes;
 use tokio::sync::mpsc;
 
 use super::{
-    AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId,
+    AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode,
 };
 use crate::error::CaptureError;
 
@@ -12,6 +11,7 @@ use crate::error::CaptureError;
 ///
 /// Uses PipeWire's monitor port on the default sink (preferred).
 /// Falls back to PulseAudio .monitor source when PipeWire is absent.
+#[derive(Default)]
 pub struct LinuxAudioCapture;
 
 impl LinuxAudioCapture {

@@ -2,7 +2,7 @@
 use serde::{Deserialize, Serialize};
 use tokio::sync::broadcast;
 
-use crate::detection::{DetectionEvent, DetectionMode};
+use crate::detection::{DetectionEvent};
 use uuid::Uuid;
 
 /// The central event type for the steno-core event bus.

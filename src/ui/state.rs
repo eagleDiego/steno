@@ -1,10 +1,9 @@
 /// Shared application state types for Tauri integration.
-use std::sync::Arc;
 use tokio::sync::RwLock;
 
 use crate::audio::CaptureConfig;
 use crate::detection::DetectionMode;
-use crate::events::{AppEvent, EventBus, UiState};
+use crate::events::{EventBus, UiState};
 
 /// Thread-safe application state shared across all Tauri commands.
 pub struct ManagedState {
@@ -26,6 +25,12 @@ impl ManagedState {
             session_active: RwLock::new(false),
             capture_started_at: RwLock::new(None),
         }
+    }
+}
+
+impl Default for ManagedState {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
