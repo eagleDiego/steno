@@ -85,7 +85,10 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    #[cfg_attr(target_os = "windows", ignore = "cpal segfaults on headless Windows CI without audio hardware")]
+    #[cfg_attr(
+        target_os = "windows",
+        ignore = "cpal segfaults on headless Windows CI without audio hardware"
+    )]
     async fn test_sensor_creation() {
         let sensor = CpalActivitySensor::new();
         // The sensor should be constructable
