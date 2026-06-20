@@ -1,12 +1,12 @@
 pub mod mic;
 pub mod wav_writer;
 
+#[cfg(target_os = "linux")]
+pub mod linux;
 #[cfg(target_os = "macos")]
 pub mod macos;
 #[cfg(target_os = "windows")]
 pub mod windows;
-#[cfg(target_os = "linux")]
-pub mod linux;
 
 use async_trait::async_trait;
 use bytes::Bytes;
@@ -155,23 +155,20 @@ impl AudioCaptureManager {
 
     /// Start both capture backends.
     pub async fn start(&mut self) -> Result<(), CaptureError> {
-        let tx = self.packet_tx.as_ref().ok_or_else(|| {
-            CaptureError::ChannelClosed("packet sender already taken".into())
-        })?;
+        let tx = self
+            .packet_tx
+            .as_ref()
+            .ok_or_else(|| CaptureError::ChannelClosed("packet sender already taken".into()))?;
 
         if self.config.mic_enabled {
             if let Some(backend) = &mut self.mic_backend {
-                backend
-                    .start(self.config.clone(), tx.clone())
-                    .await?;
+                backend.start(self.config.clone(), tx.clone()).await?;
             }
         }
 
         if self.config.system_audio_enabled {
             if let Some(backend) = &mut self.system_backend {
-                backend
-                    .start(self.config.clone(), tx.clone())
-                    .await?;
+                backend.start(self.config.clone(), tx.clone()).await?;
             }
         }
 
@@ -249,7 +246,8 @@ mod tests {
             _config: CaptureConfig,
             packet_tx: mpsc::Sender<AudioPacket>,
         ) -> Result<(), CaptureError> {
-            self.started.store(true, std::sync::atomic::Ordering::SeqCst);
+            self.started
+                .store(true, std::sync::atomic::Ordering::SeqCst);
             // Send a test packet
             let packet = AudioPacket {
                 timestamp: SystemTime::now(),
@@ -258,11 +256,15 @@ mod tests {
                 sample_rate: 16000,
                 channels: 1,
             };
-            packet_tx.send(packet).await.map_err(|_| CaptureError::ChannelClosed("send failed".into()))
+            packet_tx
+                .send(packet)
+                .await
+                .map_err(|_| CaptureError::ChannelClosed("send failed".into()))
         }
 
         async fn stop(&mut self) -> Result<(), CaptureError> {
-            self.started.store(false, std::sync::atomic::Ordering::SeqCst);
+            self.started
+                .store(false, std::sync::atomic::Ordering::SeqCst);
             Ok(())
         }
     }

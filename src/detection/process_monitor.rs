@@ -47,7 +47,9 @@ impl DetectionEngine for ProcessMonitor {
         match app {
             Some(name) => {
                 let lowered = name.to_lowercase();
-                let matched = allowlist.iter().any(|a| lowered.contains(&a.to_lowercase()));
+                let matched = allowlist
+                    .iter()
+                    .any(|a| lowered.contains(&a.to_lowercase()));
                 Ok(Some(matched))
             }
             None => Ok(None),

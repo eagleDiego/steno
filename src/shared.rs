@@ -83,8 +83,8 @@ pub mod storage {
     #[cfg(test)]
     mod tests {
         use super::*;
-        use crate::detection::DetectionMode;
         use crate::config::RetentionPolicy;
+        use crate::detection::DetectionMode;
 
         #[test]
         fn test_session_creation() {

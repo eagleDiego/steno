@@ -3,10 +3,10 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
-use crate::audio::{AudioCaptureManager, CaptureConfig, CaptureCapabilities};
+use crate::audio::{AudioCaptureManager, CaptureCapabilities, CaptureConfig};
 use crate::detection::{DetectionManager, DetectionMode};
-use crate::events::{AppEvent, EventBus, UiState};
 use crate::error::AppError;
+use crate::events::{AppEvent, EventBus, UiState};
 
 /// Shared application state managed by Tauri.
 pub struct TauriAppState {
@@ -34,9 +34,7 @@ impl TauriAppState {
 /// Start audio capture with the current configuration.
 #[cfg(feature = "ui")]
 #[tauri::command]
-pub async fn start_capture(
-    state: tauri::State<'_, TauriAppState>,
-) -> Result<(), AppError> {
+pub async fn start_capture(state: tauri::State<'_, TauriAppState>) -> Result<(), AppError> {
     let config = state.config.read().await.clone();
     let mut manager = AudioCaptureManager::new(config);
 
@@ -64,9 +62,7 @@ pub async fn start_capture(
 /// Stop audio capture.
 #[cfg(feature = "ui")]
 #[tauri::command]
-pub async fn stop_capture(
-    state: tauri::State<'_, TauriAppState>,
-) -> Result<(), AppError> {
+pub async fn stop_capture(state: tauri::State<'_, TauriAppState>) -> Result<(), AppError> {
     let mut cm = state.capture_manager.write().await;
     if let Some(ref mut manager) = *cm {
         manager.stop().await?;
@@ -134,8 +130,6 @@ pub async fn get_detection_mode(
 /// Check if currently capturing.
 #[cfg(feature = "ui")]
 #[tauri::command]
-pub async fn is_capturing(
-    state: tauri::State<'_, TauriAppState>,
-) -> Result<bool, AppError> {
+pub async fn is_capturing(state: tauri::State<'_, TauriAppState>) -> Result<bool, AppError> {
     Ok(*state.is_capturing.read().await)
 }

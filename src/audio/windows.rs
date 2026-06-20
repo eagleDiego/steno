@@ -1,11 +1,13 @@
 /// Windows system audio capture using WASAPI loopback.
 use async_trait::async_trait;
 use bytes::Bytes;
-use tokio::sync::mpsc;
 use std::time::SystemTime;
+use tokio::sync::mpsc;
 
+use super::{
+    AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId,
+};
 use crate::error::CaptureError;
-use super::{AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId};
 
 /// Windows system audio capture via WASAPI loopback.
 ///

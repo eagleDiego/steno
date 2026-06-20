@@ -8,12 +8,14 @@ use std::time::{Duration, SystemTime};
 
 use async_trait::async_trait;
 use bytes::Bytes;
-use steno_core::audio::{AudioCaptureBackend, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId};
 use steno_core::audio::AudioCaptureManager;
 use steno_core::audio::AudioPacket;
+use steno_core::audio::{
+    AudioCaptureBackend, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId,
+};
 use steno_core::detection::{
-    AudioActivitySensor, DetectionEngine, DetectionEvent, DetectionManager, DetectionMode,
-    default_allowlist,
+    default_allowlist, AudioActivitySensor, DetectionEngine, DetectionEvent, DetectionManager,
+    DetectionMode,
 };
 use steno_core::error::CaptureError;
 use steno_core::events::{AppEvent, EventBus, UiState};
@@ -66,7 +68,8 @@ impl AudioCaptureBackend for IntegrationMockBackend {
         _config: CaptureConfig,
         packet_tx: tokio::sync::mpsc::Sender<AudioPacket>,
     ) -> Result<(), CaptureError> {
-        self.started.store(true, std::sync::atomic::Ordering::SeqCst);
+        self.started
+            .store(true, std::sync::atomic::Ordering::SeqCst);
 
         // Send several test packets to simulate real audio
         for i in 0..5 {
@@ -84,7 +87,9 @@ impl AudioCaptureBackend for IntegrationMockBackend {
                 channels: 1,
             };
 
-            packet_tx.send(packet).await
+            packet_tx
+                .send(packet)
+                .await
                 .map_err(|_| CaptureError::ChannelClosed("test send failed".into()))?;
         }
 
@@ -92,7 +97,8 @@ impl AudioCaptureBackend for IntegrationMockBackend {
     }
 
     async fn stop(&mut self) -> Result<(), CaptureError> {
-        self.started.store(false, std::sync::atomic::Ordering::SeqCst);
+        self.started
+            .store(false, std::sync::atomic::Ordering::SeqCst);
         Ok(())
     }
 }
@@ -258,11 +264,10 @@ async fn test_event_bus_integration() {
     });
 
     // Both subscribers should receive the events
-    let received: Vec<AppEvent> = std::iter::from_fn(|| {
-        rx1.try_recv().ok().or_else(|| rx2.try_recv().ok())
-    })
-    .take(2)
-    .collect();
+    let received: Vec<AppEvent> =
+        std::iter::from_fn(|| rx1.try_recv().ok().or_else(|| rx2.try_recv().ok()))
+            .take(2)
+            .collect();
 
     assert_eq!(received.len(), 2, "both subscribers should receive events");
 
@@ -272,7 +277,11 @@ async fn test_event_bus_integration() {
             AppEvent::MeetingDetected(DetectionEvent::MeetingStarted { app_name, .. }) => {
                 assert_eq!(app_name, "zoom.us");
             }
-            AppEvent::CaptureStarted { mic_active, system_audio_active, .. } => {
+            AppEvent::CaptureStarted {
+                mic_active,
+                system_audio_active,
+                ..
+            } => {
                 assert!(mic_active);
                 assert!(system_audio_active);
             }
@@ -317,8 +326,14 @@ fn test_config_roundtrip_integration() {
 
     assert_eq!(deserialized.capture.sample_rate, config.capture.sample_rate);
     assert_eq!(deserialized.detection.mode, config.detection.mode);
-    assert_eq!(deserialized.inference.endpoint_url, config.inference.endpoint_url);
-    assert_eq!(deserialized.storage.retention_policy, config.storage.retention_policy);
+    assert_eq!(
+        deserialized.inference.endpoint_url,
+        config.inference.endpoint_url
+    );
+    assert_eq!(
+        deserialized.storage.retention_policy,
+        config.storage.retention_policy
+    );
 }
 
 #[tokio::test]
@@ -330,8 +345,14 @@ async fn test_capture_manager_capabilities_aggregation() {
 
     let caps = manager.capabilities();
     assert!(caps.mic_available, "mic should be available");
-    assert!(caps.system_audio_available, "system audio should be available");
-    assert!(caps.device_change_events, "system backend supports device changes");
+    assert!(
+        caps.system_audio_available,
+        "system audio should be available"
+    );
+    assert!(
+        caps.device_change_events,
+        "system backend supports device changes"
+    );
     assert_eq!(caps.max_sample_rate, 48000);
     assert!(caps.supported_sample_rates.contains(&16000));
     assert!(caps.supported_sample_rates.contains(&48000));
@@ -350,8 +371,14 @@ async fn test_capture_start_stop_multiple() {
 
     // Start and stop multiple times
     for i in 0..3 {
-        manager.start().await.unwrap_or_else(|e| panic!("start iteration {i}: {e}"));
-        manager.stop().await.unwrap_or_else(|e| panic!("stop iteration {i}: {e}"));
+        manager
+            .start()
+            .await
+            .unwrap_or_else(|e| panic!("start iteration {i}: {e}"));
+        manager
+            .stop()
+            .await
+            .unwrap_or_else(|e| panic!("stop iteration {i}: {e}"));
     }
 }
 

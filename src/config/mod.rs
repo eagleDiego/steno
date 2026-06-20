@@ -172,7 +172,10 @@ mod tests {
         assert!(!config.capture.system_audio_enabled);
         assert_eq!(config.capture.sample_rate, 16000);
         assert_eq!(config.detection.mode, DetectionMode::Armed);
-        assert_eq!(config.inference.endpoint_url, "https://openrouter.ai/api/v1");
+        assert_eq!(
+            config.inference.endpoint_url,
+            "https://openrouter.ai/api/v1"
+        );
         assert!(config.consent.require_ack);
     }
 

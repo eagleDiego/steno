@@ -4,8 +4,10 @@ use async_trait::async_trait;
 use bytes::Bytes;
 use tokio::sync::mpsc;
 
+use super::{
+    AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId,
+};
 use crate::error::CaptureError;
-use super::{AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId};
 
 /// macOS system audio capture backend.
 pub struct MacAudioCapture;

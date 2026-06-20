@@ -26,10 +26,7 @@ pub enum AppEvent {
     UiStateChange(UiState),
 
     /// Device changes
-    DeviceChanged {
-        device_type: String,
-        event: String,
-    },
+    DeviceChanged { device_type: String, event: String },
 
     /// Error events that should be surfaced to the UI
     ErrorOccurred {

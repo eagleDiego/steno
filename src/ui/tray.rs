@@ -5,7 +5,6 @@
 /// - macOS: menu bar icon
 /// - Windows: system tray icon
 /// - Linux: indicator / tray icon
-
 use serde::{Deserialize, Serialize};
 
 /// Tray menu item identifiers.
@@ -64,10 +63,7 @@ pub fn setup_tray() -> TrayConfig {
 }
 
 /// Get the status text for a given capture state and duration.
-pub fn status_text(
-    is_capturing: bool,
-    elapsed: Option<std::time::Duration>,
-) -> String {
+pub fn status_text(is_capturing: bool, elapsed: Option<std::time::Duration>) -> String {
     if is_capturing {
         match elapsed {
             Some(d) => {

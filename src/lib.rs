@@ -23,14 +23,14 @@ pub mod ui;
 
 // Re-export key types for convenience.
 pub use audio::{
-    AudioCaptureBackend, AudioCaptureManager, AudioPacket, CaptureCapabilities,
-    CaptureConfig, StreamId,
+    AudioCaptureBackend, AudioCaptureManager, AudioPacket, CaptureCapabilities, CaptureConfig,
+    StreamId,
 };
-pub use error::CaptureError;
 pub use config::Config;
 pub use detection::{
     AudioActivitySensor, DetectionEngine, DetectionEvent, DetectionManager, DetectionMode,
 };
 pub use error::AppError;
+pub use error::CaptureError;
 pub use events::{AppEvent, EventBus, UiState};
 pub use shared::{consent, storage};

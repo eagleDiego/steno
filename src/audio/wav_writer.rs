@@ -73,7 +73,8 @@ impl WavFileSink {
                 .map_err(|e| CaptureError::Backend(format!("failed to write sample: {e}")))?;
         }
 
-        self.flushed.store(false, std::sync::atomic::Ordering::SeqCst);
+        self.flushed
+            .store(false, std::sync::atomic::Ordering::SeqCst);
         Ok(())
     }
 
@@ -84,7 +85,8 @@ impl WavFileSink {
             writer
                 .finalize()
                 .map_err(|e| CaptureError::Backend(format!("failed to finalize WAV: {e}")))?;
-            self.flushed.store(true, std::sync::atomic::Ordering::SeqCst);
+            self.flushed
+                .store(true, std::sync::atomic::Ordering::SeqCst);
         }
         Ok(())
     }
@@ -240,14 +242,8 @@ mod tests {
     #[tokio::test]
     async fn test_wav_sink_create_and_write() {
         let dir = TempDir::new().unwrap();
-        let sink = WavFileSink::create(
-            dir.path(),
-            "test-session-1",
-            StreamId::Mic,
-            16000,
-            1,
-        )
-        .unwrap();
+        let sink =
+            WavFileSink::create(dir.path(), "test-session-1", StreamId::Mic, 16000, 1).unwrap();
 
         let packet = make_packet(StreamId::Mic, 16000, 1);
         sink.write_packet(&packet).await.unwrap();
@@ -262,16 +258,9 @@ mod tests {
     #[tokio::test]
     async fn test_wav_service_multi_stream() {
         let dir = TempDir::new().unwrap();
-        let service = WavWriterService::new(
-            dir.path(),
-            "multi-test".into(),
-            16000,
-            1,
-            true,
-            true,
-            false,
-        )
-        .unwrap();
+        let service =
+            WavWriterService::new(dir.path(), "multi-test".into(), 16000, 1, true, true, false)
+                .unwrap();
 
         let mic_packet = make_packet(StreamId::Mic, 16000, 1);
         let sys_packet = make_packet(StreamId::System, 16000, 1);
@@ -300,14 +289,8 @@ mod tests {
     #[tokio::test]
     async fn test_wav_sink_empty() {
         let dir = TempDir::new().unwrap();
-        let sink = WavFileSink::create(
-            dir.path(),
-            "empty-test",
-            StreamId::System,
-            16000,
-            1,
-        )
-        .unwrap();
+        let sink =
+            WavFileSink::create(dir.path(), "empty-test", StreamId::System, 16000, 1).unwrap();
         sink.finalize().await.unwrap();
 
         // An empty WAV should have just the 44-byte header
@@ -332,7 +315,10 @@ mod tests {
 
         let packet = make_packet(StreamId::Mic, 16000, 1);
         // Use tokio runtime to write the packet
-        let rt = tokio::runtime::Builder::new_current_thread().enable_all().build().unwrap();
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap();
         rt.block_on(async {
             service.write_packet(&packet).await.unwrap();
         });

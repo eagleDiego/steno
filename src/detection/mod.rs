@@ -1,6 +1,6 @@
+pub mod audio_activity;
 pub mod mode;
 pub mod process_monitor;
-pub mod audio_activity;
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
@@ -58,10 +58,8 @@ impl std::fmt::Display for DetectionMode {
 pub trait DetectionEngine: Send + Sync + 'static {
     /// Check if a meeting is currently active.
     /// Returns None if uncertain, Some(true/false) if confident.
-    async fn is_meeting_active(
-        &self,
-        allowlist: &[String],
-    ) -> Result<Option<bool>, DetectionError>;
+    async fn is_meeting_active(&self, allowlist: &[String])
+        -> Result<Option<bool>, DetectionError>;
 
     /// Get the name of the foreground application, if identifiable.
     async fn foreground_app(&self) -> Result<Option<String>, DetectionError>;
@@ -115,10 +113,7 @@ impl DetectionManager {
 
     /// Run a single detection check. Returns an event if the state changed.
     pub async fn check(&mut self) -> Result<Option<DetectionEvent>, DetectionError> {
-        let meeting = self
-            .engine
-            .is_meeting_active(&self.allowlist)
-            .await?;
+        let meeting = self.engine.is_meeting_active(&self.allowlist).await?;
 
         match meeting {
             Some(true) => {
@@ -142,9 +137,7 @@ impl DetectionManager {
                 if self.meeting_active {
                     self.meeting_active = false;
                     let app = match &self.last_event_sent {
-                        Some(DetectionEvent::MeetingStarted { app_name, .. }) => {
-                            app_name.clone()
-                        }
+                        Some(DetectionEvent::MeetingStarted { app_name, .. }) => app_name.clone(),
                         _ => "unknown".to_string(),
                     };
                     let event = DetectionEvent::MeetingEnded {
@@ -236,11 +229,9 @@ mod tests {
             &self,
             allowlist: &[String],
         ) -> Result<Option<bool>, DetectionError> {
-            Ok(Some(
-                allowlist
-                    .iter()
-                    .any(|a| self.foreground.to_lowercase().contains(&a.to_lowercase())),
-            ))
+            Ok(Some(allowlist.iter().any(|a| {
+                self.foreground.to_lowercase().contains(&a.to_lowercase())
+            })))
         }
 
         async fn foreground_app(&self) -> Result<Option<String>, DetectionError> {
@@ -336,7 +327,10 @@ mod tests {
 
         // First check: meeting starts
         let event1 = manager.check().await.unwrap();
-        assert!(matches!(event1, Some(DetectionEvent::MeetingStarted { .. })));
+        assert!(matches!(
+            event1,
+            Some(DetectionEvent::MeetingStarted { .. })
+        ));
 
         // Second check: still meeting
         let event2 = manager.check().await.unwrap();
