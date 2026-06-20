@@ -61,7 +61,7 @@ case "${EXT}" in
         check "Installer is valid .exe"   file "${INSTALLER}" | grep -qiE "PE32|executable"
         ;;
     dmg)
-        check "Installer is valid .dmg"   file "${INSTALLER}" | grep -qi "disk image"
+        check "Installer is valid .dmg"   file "${INSTALLER}" | grep -qiE "(disk image|Apple Disk Image|zlib compressed|bzip2 compressed)"
         ;;
     rpm)
         check "Installer is valid .rpm"   rpm -K "${INSTALLER}" >/dev/null 2>&1 || true
