@@ -37,6 +37,45 @@ sudo apt-get install -y libpipewire-0.3-dev libspa-0.2-dev || true
 > **Note**: Tauri 2.x uses the system WebKit (WKWebView) — no additional frameworks needed.
 > The macOS build produces a `.dmg` with minimum target macOS 14.0.
 
+### Build on macOS (step by step)
+
+```bash
+# 1. Install prerequisites (if not already done)
+xcode-select --install
+brew install node
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# 2. Clone the repo
+git clone https://github.com/eagleDiego/steno.git
+cd steno
+
+# 3. Install frontend dependencies
+npm install
+
+# 4. Build the macOS installer (.dmg)
+#    This compiles the Rust backend, builds the frontend, and packages everything
+./build/build-macos.sh
+
+#    Alternative: use Tauri CLI directly
+#    npm run tauri build -- --bundles dmg
+
+# 5. The output .dmg will be in src-tauri/target/release/bundle/dmg/
+#    or dist/installers/
+```
+
+### Run locally (development)
+
+```bash
+# Start the dev server with hot-reload
+npm run tauri dev
+```
+
+### Known macOS issues
+
+- On first build, Rust will download and compile many dependencies — expect 5–15 minutes.
+- If you get a code signing warning on the .dmg, right-click → Open, or run `xattr -dr com.apple.quarantine Steno.app` after mounting.
+- The app requires **microphone permission** (macOS 14+) — grant when prompted on first launch.
+
 #### Windows
 Install Microsoft Visual Studio C++ Build Tools and WebView2 (included with Windows 10+).
 
