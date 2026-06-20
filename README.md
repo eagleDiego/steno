@@ -28,7 +28,12 @@ sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev \
 ```
 
 #### macOS
-No additional dependencies — Xcode Command Line Tools suffice.
+- **Xcode Command Line Tools**: `xcode-select --install`
+- **Node.js** (20+): Download from https://nodejs.org or via `brew install node`
+- **Rust**: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+
+> **Note**: Tauri 2.x uses the system WebKit (WKWebView) — no additional frameworks needed.
+> The macOS build produces a `.dmg` with minimum target macOS 14.0.
 
 #### Windows
 Install Microsoft Visual Studio C++ Build Tools and WebView2 (included with Windows 10+).
@@ -47,7 +52,7 @@ make build
 
 Output artifacts in `src-tauri/target/release/bundle/`:
 - Linux: `.AppImage`, `.deb`
-- macOS: `.dmg`
+|macOS: `.dmg` (macOS 14.0+)
 - Windows: `.exe` (NSIS)
 
 ### Run tests
