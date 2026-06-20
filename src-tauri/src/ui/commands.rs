@@ -1,14 +1,13 @@
 /// Tauri commands — the IPC bridge between the Svelte frontend and Rust backend.
 use tokio::sync::RwLock;
 
+use steno_core::audio::CaptureCapabilities;
 use steno_core::audio::{AudioCaptureManager, CaptureConfig};
 use steno_core::detection::DetectionManager;
-use steno_core::events::EventBus;
-use steno_core::audio::CaptureCapabilities;
 use steno_core::detection::DetectionMode;
 use steno_core::error::AppError;
 use steno_core::events::AppEvent;
-
+use steno_core::events::EventBus;
 
 /// Shared application state managed by Tauri.
 pub struct TauriAppState {
