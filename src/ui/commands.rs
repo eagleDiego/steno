@@ -6,11 +6,11 @@ use crate::detection::DetectionManager;
 use crate::events::EventBus;
 
 #[cfg(feature = "ui")]
-use crate::error::AppError;
-#[cfg(feature = "ui")]
 use crate::audio::CaptureCapabilities;
 #[cfg(feature = "ui")]
 use crate::detection::DetectionMode;
+#[cfg(feature = "ui")]
+use crate::error::AppError;
 #[cfg(feature = "ui")]
 use crate::events::AppEvent;
 

@@ -2,9 +2,7 @@
 use async_trait::async_trait;
 use tokio::sync::mpsc;
 
-use super::{
-    AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode,
-};
+use super::{AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode};
 use crate::error::CaptureError;
 
 /// Linux system audio capture backend.
