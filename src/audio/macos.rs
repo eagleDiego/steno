@@ -1,15 +1,13 @@
 /// macOS system audio capture using CoreAudio process taps (preferred, 14.4+)
 /// and ScreenCaptureKit (fallback, 13+).
 use async_trait::async_trait;
-use bytes::Bytes;
 use tokio::sync::mpsc;
 
-use super::{
-    AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId,
-};
+use super::{AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode};
 use crate::error::CaptureError;
 
 /// macOS system audio capture backend.
+#[derive(Default)]
 pub struct MacAudioCapture;
 
 impl MacAudioCapture {

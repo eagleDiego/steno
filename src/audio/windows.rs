@@ -1,18 +1,15 @@
 /// Windows system audio capture using WASAPI loopback.
 use async_trait::async_trait;
-use bytes::Bytes;
-use std::time::SystemTime;
 use tokio::sync::mpsc;
 
-use super::{
-    AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode, StreamId,
-};
+use super::{AudioCaptureBackend, AudioPacket, CaptureCapabilities, CaptureConfig, ChannelMode};
 use crate::error::CaptureError;
 
 /// Windows system audio capture via WASAPI loopback.
 ///
 /// WASAPI loopback captures the audio stream being played through
 /// the default output device — no virtual audio device needed.
+#[derive(Default)]
 pub struct WindowsAudioCapture;
 
 impl WindowsAudioCapture {
