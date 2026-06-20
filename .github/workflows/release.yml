@@ -62,8 +62,6 @@ jobs:
 
       - name: Cache Cargo
         uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: src-tauri
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -75,7 +73,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npx tauri build --bundles ${{ matrix.bundle }}
+        run: npm run tauri build -- --bundles ${{ matrix.bundle }}
         env:
           APPIMAGE_EXTRACT_AND_RUN: 1
 
@@ -87,12 +85,12 @@ jobs:
             const path = require('path');
             const glob = require('@actions/glob');
             const patterns = [
-              'src-tauri/target/release/bundle/**/*.AppImage',
-              'src-tauri/target/release/bundle/**/*.deb',
-              'src-tauri/target/release/bundle/**/*.dmg',
-              'src-tauri/target/release/bundle/**/*.exe',
-              'src-tauri/target/release/bundle/**/*.msi',
-              'src-tauri/target/release/bundle/**/*.rpm',
+              'target/release/bundle/**/*.AppImage',
+              'target/release/bundle/**/*.deb',
+              'target/release/bundle/**/*.dmg',
+              'target/release/bundle/**/*.exe',
+              'target/release/bundle/**/*.msi',
+              'target/release/bundle/**/*.rpm',
             ];
             for (const pattern of patterns) {
               const globber = await glob.create(pattern);
