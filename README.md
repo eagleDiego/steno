@@ -52,7 +52,7 @@ make build
 
 Output artifacts in `src-tauri/target/release/bundle/`:
 - Linux: `.AppImage`, `.deb`
-|macOS: `.dmg` (macOS 14.0+)
+- macOS: `.dmg` (macOS 14.0+)
 - Windows: `.exe` (NSIS)
 
 ### Run tests
