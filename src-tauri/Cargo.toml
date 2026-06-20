@@ -5,7 +5,7 @@ edition = "2021"
 description = "Steno - Meeting audio capture desktop app"
 
 [dependencies]
-steno-core = { path = "../", features = ["ui"] }
+steno-core = { path = "../" }
 tauri = { version = "2", features = ["tray-icon"] }
 tauri-plugin-shell = "2"
 tauri-plugin-notification = "2"

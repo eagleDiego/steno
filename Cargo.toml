@@ -80,7 +80,7 @@ tauri-plugin-shell = { version = "2" }
 tauri-plugin-notification = { version = "2" }
 
 [features]
-default = []
+default = ["ui"]
 ui = []
 
 [dev-dependencies]
