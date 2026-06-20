@@ -19,8 +19,6 @@ pub mod detection;
 pub mod error;
 pub mod events;
 pub mod shared;
-#[cfg(feature = "ui")]
-pub mod ui;
 
 // Re-export key types for convenience.
 pub use audio::{

@@ -1,9 +1,9 @@
 /// Shared application state types for Tauri integration.
 use tokio::sync::RwLock;
 
-use crate::audio::CaptureConfig;
-use crate::detection::DetectionMode;
-use crate::events::{EventBus, UiState};
+use steno_core::audio::CaptureConfig;
+use steno_core::detection::DetectionMode;
+use steno_core::events::{EventBus, UiState};
 
 /// Thread-safe application state shared across all Tauri commands.
 pub struct ManagedState {

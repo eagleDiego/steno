@@ -71,17 +71,8 @@ windows = { version = "0.58", features = [
 [target.'cfg(target_os = "linux")'.dependencies]
 pipewire = "0.8"
 
-# Tauri UI dependencies — non-optional so Cargo workspace resolution
-# always makes `tauri` available when the `ui` module is compiled.
-# The `ui` feature gate on `pub mod ui` in lib.rs controls whether
-# the module actually gets compiled.
-tauri = { version = "2", features = ["tray-icon"] }
-tauri-plugin-shell = { version = "2" }
-tauri-plugin-notification = { version = "2" }
-
 [features]
-default = ["ui"]
-ui = []
+default = []
 
 [dev-dependencies]
 tempfile = "3"

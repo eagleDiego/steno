@@ -4178,6 +4178,7 @@ dependencies = [
  "tokio",
  "tracing",
  "tracing-subscriber",
+ "uuid",
 ]
 
 [[package]]
@@ -4202,9 +4203,6 @@ dependencies = [
  "rusqlite",
  "serde",
  "serde_json",
- "tauri",
- "tauri-plugin-notification",
- "tauri-plugin-shell",
  "tempfile",
  "thiserror 2.0.18",
  "tokio",

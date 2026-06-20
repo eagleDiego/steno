@@ -1,3 +1,5 @@
+mod ui;
+
 use steno_core::Config;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -18,15 +20,15 @@ pub fn run() {
         .plugin(tauri_plugin_fs::init())
         .manage(config)
         .invoke_handler(tauri::generate_handler![
-            steno_core::ui::commands::start_capture,
-            steno_core::ui::commands::stop_capture,
-            steno_core::ui::commands::is_capturing,
-            steno_core::ui::commands::get_capabilities,
-            steno_core::ui::commands::set_detection_mode,
-            steno_core::ui::commands::get_detection_mode,
+            crate::ui::commands::start_capture,
+            crate::ui::commands::stop_capture,
+            crate::ui::commands::is_capturing,
+            crate::ui::commands::get_capabilities,
+            crate::ui::commands::set_detection_mode,
+            crate::ui::commands::get_detection_mode,
         ])
         .setup(|_app| {
-            let _tray_cfg = steno_core::ui::tray::setup_tray();
+            let _tray_cfg = crate::ui::tray::setup_tray();
             tracing::info!("Steno initialized (tray: {})", _tray_cfg.tooltip);
             Ok(())
         })

@@ -1,18 +1,14 @@
 /// Tauri commands — the IPC bridge between the Svelte frontend and Rust backend.
 use tokio::sync::RwLock;
 
-use crate::audio::{AudioCaptureManager, CaptureConfig};
-use crate::detection::DetectionManager;
-use crate::events::EventBus;
+use steno_core::audio::{AudioCaptureManager, CaptureConfig};
+use steno_core::detection::DetectionManager;
+use steno_core::events::EventBus;
+use steno_core::audio::CaptureCapabilities;
+use steno_core::detection::DetectionMode;
+use steno_core::error::AppError;
+use steno_core::events::AppEvent;
 
-#[cfg(feature = "ui")]
-use crate::audio::CaptureCapabilities;
-#[cfg(feature = "ui")]
-use crate::detection::DetectionMode;
-#[cfg(feature = "ui")]
-use crate::error::AppError;
-#[cfg(feature = "ui")]
-use crate::events::AppEvent;
 
 /// Shared application state managed by Tauri.
 pub struct TauriAppState {
@@ -44,7 +40,6 @@ impl Default for TauriAppState {
 // ── Tauri command handlers ───────────────────────────────────────────
 
 /// Start audio capture with the current configuration.
-#[cfg(feature = "ui")]
 #[tauri::command]
 pub async fn start_capture(state: tauri::State<'_, TauriAppState>) -> Result<(), AppError> {
     let config = state.config.read().await.clone();
@@ -72,7 +67,6 @@ pub async fn start_capture(state: tauri::State<'_, TauriAppState>) -> Result<(),
 }
 
 /// Stop audio capture.
-#[cfg(feature = "ui")]
 #[tauri::command]
 pub async fn stop_capture(state: tauri::State<'_, TauriAppState>) -> Result<(), AppError> {
     let mut cm = state.capture_manager.write().await;
@@ -93,7 +87,6 @@ pub async fn stop_capture(state: tauri::State<'_, TauriAppState>) -> Result<(), 
 }
 
 /// Get current capture capabilities.
-#[cfg(feature = "ui")]
 #[tauri::command]
 pub async fn get_capabilities(
     state: tauri::State<'_, TauriAppState>,
@@ -113,7 +106,6 @@ pub async fn get_capabilities(
 }
 
 /// Update detection mode.
-#[cfg(feature = "ui")]
 #[tauri::command]
 pub async fn set_detection_mode(
     state: tauri::State<'_, TauriAppState>,
@@ -127,7 +119,6 @@ pub async fn set_detection_mode(
 }
 
 /// Get current detection mode.
-#[cfg(feature = "ui")]
 #[tauri::command]
 pub async fn get_detection_mode(
     state: tauri::State<'_, TauriAppState>,
@@ -140,7 +131,6 @@ pub async fn get_detection_mode(
 }
 
 /// Check if currently capturing.
-#[cfg(feature = "ui")]
 #[tauri::command]
 pub async fn is_capturing(state: tauri::State<'_, TauriAppState>) -> Result<bool, AppError> {
     Ok(*state.is_capturing.read().await)
