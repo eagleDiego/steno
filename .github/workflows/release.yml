@@ -17,7 +17,7 @@ jobs:
           - os: ubuntu-latest
             bundle: appimage,deb
             asset-name: Steno-linux-x86_64
-            artifacts: target/release/bundle/**/*.AppImage,target/release/bundle/**/*.deb,target/release/bundle/**/*.rpm
+            artifacts: target/release/bundle/**/*.AppImage,target/release/bundle/**/*.deb
           - os: macos-latest
             bundle: dmg
             asset-name: Steno-macos-x86_64
@@ -25,7 +25,7 @@ jobs:
           - os: windows-latest
             bundle: nsis
             asset-name: Steno-windows-x86_64
-            artifacts: target/release/bundle/**/*.exe,target/release/bundle/**/*.msi
+            artifacts: target/release/bundle/**/*.exe
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
