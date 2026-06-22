@@ -17,12 +17,15 @@ jobs:
           - os: ubuntu-latest
             bundle: appimage,deb
             asset-name: Steno-linux-x86_64
+            artifacts: target/release/bundle/**/*.AppImage,target/release/bundle/**/*.deb,target/release/bundle/**/*.rpm
           - os: macos-latest
             bundle: dmg
             asset-name: Steno-macos-x86_64
+            artifacts: target/release/bundle/**/*.dmg
           - os: windows-latest
             bundle: nsis
             asset-name: Steno-windows-x86_64
+            artifacts: target/release/bundle/**/*.exe,target/release/bundle/**/*.msi
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -68,5 +71,5 @@ jobs:
           name: ${{ github.ref_name }}
           allowUpdates: true
           omitBodyDuringUpdate: true
-          artifacts: "target/release/bundle/**/*.AppImage,target/release/bundle/**/*.deb,target/release/bundle/**/*.dmg,target/release/bundle/**/*.exe,target/release/bundle/**/*.msi,target/release/bundle/**/*.rpm"
+          artifacts: ${{ matrix.artifacts }}
           artifactErrorsFailBuild: true
