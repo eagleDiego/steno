@@ -31,12 +31,10 @@ npm run build
 echo "==> Building Tauri app (macOS)..."
 npx tauri build --bundles dmg "${BUILD_TYPE}"
 
-# 4. Codesign (optional — requires valid Apple Developer identity)
+# 4. Codesign and notarize
 if [ -n "${APPLE_SIGNING_IDENTITY:-}" ]; then
-    echo "==> Codesigning .app bundle..."
-    codesign --deep --force --verify --verbose \
-        --sign "${APPLE_SIGNING_IDENTITY}" \
-        src-tauri/target/release/bundle/macos/*.app || true
+    echo "==> Codesigning and notarizing .app bundle..."
+    ./build/sign-macos.sh --dmg "src-tauri/target/release/bundle/dmg/"*.dmg
 fi
 
 # 5. Collect artifacts

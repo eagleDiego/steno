@@ -111,6 +111,39 @@ jobs:
       - name: Install npm deps
         run: npm ci
 
+      - name: Import Apple Developer certificate (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          # If the signing certificate is provided as a secret, import it
+          if [ -n "${APPLE_DEV_CERTIFICATE_P12_BASE64:-}" ]; then
+            echo "==> Importing Apple Developer signing certificate..."
+
+            # Decode the base64-encoded .p12 certificate
+            echo "$APPLE_DEV_CERTIFICATE_P12_BASE64" | base64 -d > /tmp/dev-cert.p12
+
+            # Create temp keychain and import
+            security create-keychain -p temp /tmp/build.keychain
+            security default-keychain -s /tmp/build.keychain
+            security unlock-keychain -p temp /tmp/build.keychain
+            security import /tmp/dev-cert.p12 \
+              -k /tmp/build.keychain \
+              -P "${APPLE_DEV_CERTIFICATE_PASSWORD:-}" \
+              -T /usr/bin/codesign
+            security set-key-partition-list \
+              -S apple-tool:,apple:,codesign: \
+              -s -k temp /tmp/build.keychain
+
+            # Verify the certificate was imported
+            echo "==> Imported certificates:"
+            security find-identity -v -p codesigning
+
+            # Clean up the .p12 file
+            rm -f /tmp/dev-cert.p12
+          else
+            echo "==> No APPLE_DEV_CERTIFICATE_P12_BASE64 secret set — skipping certificate import"
+            echo "    The build will use ad-hoc signing (not distributable)"
+          fi
+
       - name: Build Rust app
         run: cargo build --release -p steno-app
 
@@ -119,6 +152,12 @@ jobs:
         env:
           # Prevent AppImage from trying to FUSE-mount
           APPIMAGE_EXTRACT_AND_RUN: 1
+          # macOS signing identity (from Apple Developer cert import)
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          # Notarization credentials (passed through to sign-macos.sh via env)
+          APPLE_NOTARIZATION_EMAIL: ${{ secrets.APPLE_NOTARIZATION_EMAIL }}
+          APPLE_NOTARIZATION_PASS: ${{ secrets.APPLE_NOTARIZATION_PASS }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Run smoke tests (Linux)
         if: runner.os == 'Linux'
